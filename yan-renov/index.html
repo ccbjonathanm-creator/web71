@@ -436,6 +436,7 @@
     </a>
     <nav class="nav-links">
       <a href="#services">Prestations</a>
+      <a href="#calc">Simulateur</a>
       <a href="#process">Notre méthode</a>
       <a href="#realisations">Réalisations</a>
       <a href="#avis">Avis</a>
@@ -551,6 +552,152 @@
 
 
 <!-- ===== CALCULATEUR ===== -->
+<section id="calc">
+  <style>
+    .vz-head{text-align:center;max-width:640px;margin:0 auto 40px}
+    .vz-head .eyebrow{justify-content:center}.vz-head .lead{margin:20px auto 0}
+    .vz{max-width:1010px;margin:0 auto;display:grid;grid-template-columns:1.45fr 1fr;gap:22px;
+      background:linear-gradient(165deg,var(--panel),var(--ink-2));border:1px solid var(--line);
+      border-radius:26px;padding:26px}
+    .vz-stage{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line-2);background:#0b0f18}
+    .vz-canvas{display:block;width:100%;touch-action:none;cursor:crosshair}
+    .vz-hint{position:absolute;left:12px;top:12px;background:rgba(6,9,15,.7);backdrop-filter:blur(6px);
+      border:1px solid var(--line-2);border-radius:100px;padding:6px 13px;font-family:'Sora';font-weight:600;
+      font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;color:var(--txt-2);pointer-events:none}
+    .vz-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    .vz-tool{display:inline-flex;align-items:center;gap:7px;background:rgba(6,9,15,.5);border:1px solid var(--line-2);
+      border-radius:11px;padding:9px 13px;color:var(--txt);font-family:'Sora';font-weight:600;font-size:.85rem;cursor:pointer;transition:.2s}
+    .vz-tool:hover{border-color:var(--gold)} .vz-tool.on{border-color:var(--gold);background:rgba(232,180,90,.12)}
+    .vz-sizes{display:inline-flex;gap:4px;margin-left:auto}
+    .vz-size{width:34px;height:34px;border-radius:9px;border:1px solid var(--line-2);background:rgba(6,9,15,.5);
+      color:var(--txt-2);font-family:'Sora';font-weight:700;font-size:.8rem;cursor:pointer}
+    .vz-size.on{border-color:var(--gold);color:var(--gold)}
+    .vz-side{display:flex;flex-direction:column}
+    .vz-selected{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+    .vz-chip{width:52px;height:52px;border-radius:13px;border:1px solid var(--line-2);flex-shrink:0}
+    .vz-selected b{font-family:'Sora';font-size:1.05rem;display:block}.vz-selected span{color:var(--muted);font-size:.82rem}
+    .vz-lab{font-family:'Sora';font-weight:600;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:6px 0 10px}
+    .vz-swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+    .vz-sw{aspect-ratio:1;border-radius:9px;cursor:pointer;border:2px solid transparent;transition:transform .15s}
+    .vz-sw:hover{transform:scale(1.08)} .vz-sw.on{border-color:#fff;box-shadow:0 0 0 2px var(--ink)}
+    .vz-range{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:100px;background:rgba(255,255,255,.14);cursor:pointer;margin:8px 0}
+    .vz-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--grad-gold);border:3px solid var(--ink);cursor:pointer}
+    .vz-range::-moz-range-thumb{width:18px;height:18px;border:3px solid var(--ink);border-radius:50%;background:var(--gold);cursor:pointer}
+    .vz-side .btn{width:100%;justify-content:center;margin-top:auto}
+    .vz-note{font-size:.75rem;color:var(--muted);margin-top:14px;line-height:1.5}
+    @media(max-width:860px){.vz{grid-template-columns:1fr;padding:18px}.vz-sizes{margin-left:0}}
+  </style>
+  <div class="wrap">
+    <div class="vz-head reveal">
+      <span class="eyebrow">Simulateur couleur</span>
+      <h2 class="title">Visualisez votre future couleur <span class="accent">en 10 secondes.</span></h2>
+      <p class="lead">Prenez une photo de votre pièce, choisissez une teinte, et peignez le mur au doigt. Rendu réaliste avec la lumière de votre intérieur.</p>
+    </div>
+    <div class="vz reveal">
+      <div class="vz-main">
+        <div class="vz-stage">
+          <canvas class="vz-canvas" id="vz-canvas"></canvas>
+          <span class="vz-hint">Peignez le mur au doigt</span>
+        </div>
+        <div class="vz-bar">
+          <button type="button" class="vz-tool" id="vz-upload"><svg class="icn"><use href="#i-arrow"/></svg> Ma photo</button>
+          <input type="file" id="vz-file" accept="image/*" hidden>
+          <button type="button" class="vz-tool" id="vz-eraser">Gomme</button>
+          <button type="button" class="vz-tool" id="vz-clear">Effacer</button>
+          <div class="vz-sizes">
+            <button type="button" class="vz-size" data-b="26">S</button>
+            <button type="button" class="vz-size on" data-b="48">M</button>
+            <button type="button" class="vz-size" data-b="80">L</button>
+          </div>
+        </div>
+      </div>
+      <div class="vz-side">
+        <div class="vz-selected">
+          <span class="vz-chip" id="vz-chip"></span>
+          <div><b id="vz-name">Terracotta</b><span id="vz-hex">#C2704E</span></div>
+        </div>
+        <div class="vz-lab">Nuancier atelier</div>
+        <div class="vz-swatches" id="vz-swatches"></div>
+        <div class="vz-lab" style="margin-top:18px">Intensité <span id="vz-pct" style="color:var(--gold)">80%</span></div>
+        <input type="range" class="vz-range" id="vz-range" min="20" max="100" value="80">
+        <a class="btn btn-gold" href="#contact" style="margin-top:20px"><svg class="icn"><use href="#i-drop"/></svg> J'adore, demander un devis</a>
+        <p class="vz-note">Simulation indicative. Le rendu final dépend du support et de la lumière. Échantillon et devis gratuits sur place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var cv=document.getElementById('vz-canvas'); if(!cv)return;
+  var ctx=cv.getContext('2d');
+  var paint=document.createElement('canvas'), pctx=paint.getContext('2d');
+  var img=new Image(); img.crossOrigin='anonymous';
+  var color='#C2704E', brush=48, eraser=false, intensity=0.8, drawing=false, lx=0, ly=0;
+  var SHADES=[
+    ['Blanc craie','#F3EEE6'],['Lin','#EAE3D6'],['Coquille','#E5DCCB'],
+    ['Sable','#D8C7AE'],['Argile claire','#C9B79A'],['Grège','#B9A588'],
+    ['Terracotta','#C2704E'],['Brique','#B65D3C'],['Ocre rouge','#9E4A2E'],
+    ['Bleu nuit','#34506B'],['Bleu paon','#2A4A6B'],['Encre','#1F3A57'],
+    ['Sauge','#9CAA8C'],['Eucalyptus','#86977A'],['Olive douce','#6E8467'],
+    ['Gris perle','#9A9A98'],['Galet','#7E7E7C'],['Ardoise','#5C5C5A']
+  ];
+  function sizeCanvas(){
+    var maxW=900, w=img.naturalWidth||1200, h=img.naturalHeight||800;
+    var sc=Math.min(1, maxW/w); w=Math.round(w*sc); h=Math.round(h*sc);
+    cv.width=w; cv.height=h; paint.width=w; paint.height=h;
+    pctx.lineCap='round'; pctx.lineJoin='round';
+    render();
+  }
+  function render(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    if(img.complete && img.naturalWidth) ctx.drawImage(img,0,0,cv.width,cv.height);
+    ctx.save(); ctx.globalAlpha=intensity; ctx.globalCompositeOperation='multiply';
+    ctx.drawImage(paint,0,0); ctx.restore();
+  }
+  function pos(e){var r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*cv.width,y:(e.clientY-r.top)/r.height*cv.height};}
+  function stroke(a,b){
+    pctx.globalCompositeOperation = eraser ? 'destination-out' : 'source-over';
+    pctx.strokeStyle=color; pctx.lineWidth=brush;
+    pctx.beginPath(); pctx.moveTo(a.x,a.y); pctx.lineTo(b.x,b.y); pctx.stroke();
+    render();
+  }
+  cv.addEventListener('pointerdown',function(e){drawing=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}
+    var p=pos(e); lx=p.x; ly=p.y; stroke(p,p);});
+  cv.addEventListener('pointermove',function(e){if(!drawing)return;var p=pos(e);stroke({x:lx,y:ly},p);lx=p.x;ly=p.y;});
+  window.addEventListener('pointerup',function(){drawing=false;});
+  // nuancier
+  var sw=document.getElementById('vz-swatches');
+  SHADES.forEach(function(s,i){
+    var d=document.createElement('button'); d.type='button'; d.className='vz-sw'+(s[1]===color?' on':'');
+    d.style.background=s[1]; d.title=s[0];
+    d.addEventListener('click',function(){
+      color=s[1]; eraser=false; document.getElementById('vz-eraser').classList.remove('on');
+      document.querySelectorAll('.vz-sw').forEach(function(x){x.classList.remove('on');}); d.classList.add('on');
+      document.getElementById('vz-chip').style.background=s[1];
+      document.getElementById('vz-name').textContent=s[0];
+      document.getElementById('vz-hex').textContent=s[1];
+    });
+    sw.appendChild(d);
+  });
+  document.getElementById('vz-chip').style.background=color;
+  // tailles
+  document.querySelectorAll('.vz-size').forEach(function(b){b.addEventListener('click',function(){
+    brush=+b.dataset.b; document.querySelectorAll('.vz-size').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');});});
+  // gomme / effacer / intensite / upload
+  var er=document.getElementById('vz-eraser');
+  er.addEventListener('click',function(){eraser=!eraser; er.classList.toggle('on',eraser);});
+  document.getElementById('vz-clear').addEventListener('click',function(){pctx.clearRect(0,0,paint.width,paint.height);render();});
+  var rng=document.getElementById('vz-range');
+  rng.addEventListener('input',function(){intensity=+rng.value/100;document.getElementById('vz-pct').textContent=rng.value+'%';render();});
+  document.getElementById('vz-upload').addEventListener('click',function(){document.getElementById('vz-file').click();});
+  document.getElementById('vz-file').addEventListener('change',function(e){
+    var f=e.target.files[0]; if(!f)return; var rd=new FileReader();
+    rd.onload=function(ev){pctx.clearRect(0,0,paint.width,paint.height);img=new Image();img.onload=sizeCanvas;img.src=ev.target.result;};
+    rd.readAsDataURL(f);
+  });
+  img.onload=sizeCanvas; img.src='https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1000&q=80';
+})();
+</script>
 
 
 <!-- ===== PROCESS ===== -->
@@ -574,60 +721,6 @@
 
 
 <!-- ===== GALLERY ===== -->
-<section class="ba-section reveal">
-  <style>
-    .ba-section{padding:110px 0}
-    .ba-inner{max-width:920px;margin:44px auto 0}
-    .ba{--pos:50%;position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line-2);
-      aspect-ratio:16/10;cursor:ew-resize;user-select:none;touch-action:none;box-shadow:var(--shadow);outline:none}
-    .ba:focus-visible{box-shadow:var(--shadow),0 0 0 3px rgba(255,255,255,.18)}
-    .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-    .ba .ba-before{filter:grayscale(.92) brightness(.55) contrast(1.08) sepia(.15);
-      clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-    .ba-handle{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:var(--gold);
-      transform:translateX(-1px);pointer-events:none}
-    .ba-grip{position:absolute;top:50%;left:var(--pos);transform:translate(-50%,-50%);width:48px;height:48px;
-      border-radius:50%;background:var(--grad-gold);color:#1c1305;display:grid;place-items:center;
-      font-size:1.25rem;font-weight:700;box-shadow:var(--shadow-gold);pointer-events:none}
-    .ba-tag{position:absolute;top:16px;padding:6px 14px;border-radius:100px;font-family:'Sora',sans-serif;
-      font-weight:600;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
-      background:rgba(6,9,15,.68);backdrop-filter:blur(6px);border:1px solid var(--line-2)}
-    .ba-tag-b{left:16px;color:var(--txt-2)} .ba-tag-a{right:16px;color:var(--gold)}
-    .ba-hint{text-align:center;color:var(--muted);font-size:.85rem;margin-top:18px}
-  </style>
-  <div class="wrap">
-    <div class="reveal">
-      <span class="eyebrow">Avant / Après</span>
-      <h2 class="title">La transformation, <span class="accent">en un geste.</span></h2>
-      <p class="lead">Faites glisser la poignée pour découvrir le résultat d'un de nos chantiers.</p>
-    </div>
-    <div class="ba-inner reveal">
-      <div class="ba" id="ba" tabindex="0" role="slider" aria-label="Comparateur avant après" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-        <img class="ba-after" src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=700&q=80" alt="Après travaux">
-        <img class="ba-before" src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=700&q=80" alt="Avant travaux">
-        <span class="ba-tag ba-tag-b">Avant</span>
-        <span class="ba-tag ba-tag-a">Après</span>
-        <div class="ba-handle"></div>
-        <div class="ba-grip">&#8646;</div>
-      </div>
-      <p class="ba-hint">Glissez, cliquez ou utilisez les flèches ← → · Photo d'illustration, à remplacer par vos chantiers.</p>
-    </div>
-  </div>
-  <script>
-  (function(){
-    var ba=document.getElementById('ba'); if(!ba)return;
-    function set(p){p=Math.max(0,Math.min(100,p));ba.style.setProperty('--pos',p+'%');ba.setAttribute('aria-valuenow',Math.round(p));}
-    function fromX(x){var r=ba.getBoundingClientRect();set((x-r.left)/r.width*100);}
-    var drag=false;
-    ba.addEventListener('pointerdown',function(e){drag=true;try{ba.setPointerCapture(e.pointerId);}catch(_){}fromX(e.clientX);});
-    ba.addEventListener('pointermove',function(e){if(drag)fromX(e.clientX);});
-    window.addEventListener('pointerup',function(){drag=false;});
-    ba.addEventListener('keydown',function(e){var v=parseFloat(ba.getAttribute('aria-valuenow'))||50;
-      if(e.key==='ArrowLeft'){set(v-4);e.preventDefault();}if(e.key==='ArrowRight'){set(v+4);e.preventDefault();}});
-    set(50);
-  })();
-  </script>
-</section>
 <section id="realisations">
   <div class="wrap">
     <div class="reveal">
@@ -800,7 +893,7 @@
     btn.addEventListener('mouseleave',()=>btn.style.transform='');
   });
 
-  // ===== Calculateur =====
+  // ===== Visualiseur =====
 
 
   // ===== Bandeau WEB71 =====
