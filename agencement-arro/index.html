@@ -365,7 +365,7 @@
   @media(max-width:820px){.calc{grid-template-columns:1fr;padding:26px}
     .result-nums .rn{font-size:1.35rem}.result-nums .cost .rn{font-size:1.6rem}}
 
-  /* --- BANDEAU WEB71 (conversion) --- */
+  /* --- BANDEAU GENERATIONAPP (conversion) --- */
   .w71-bar{position:fixed;left:0;right:0;bottom:0;z-index:120;
     background:rgba(9,13,22,.92);backdrop-filter:blur(18px) saturate(1.3);
     border-top:1px solid rgba(209,164,94,.35);box-shadow:0 -14px 40px -16px rgba(0,0,0,.7);
@@ -400,6 +400,7 @@
   .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
+  <link rel="stylesheet" href="../site-enhancements.css">
 </head>
 <body>
 
@@ -593,60 +594,6 @@
 
 
 <!-- ===== GALLERY ===== -->
-<section class="ba-section reveal">
-  <style>
-    .ba-section{padding:110px 0}
-    .ba-inner{max-width:920px;margin:44px auto 0}
-    .ba{--pos:50%;position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line-2);
-      aspect-ratio:16/10;cursor:ew-resize;user-select:none;touch-action:none;box-shadow:var(--shadow);outline:none}
-    .ba:focus-visible{box-shadow:var(--shadow),0 0 0 3px rgba(255,255,255,.18)}
-    .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-    .ba .ba-before{filter:grayscale(.92) brightness(.55) contrast(1.08) sepia(.15);
-      clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
-    .ba-handle{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;background:var(--gold);
-      transform:translateX(-1px);pointer-events:none}
-    .ba-grip{position:absolute;top:50%;left:var(--pos);transform:translate(-50%,-50%);width:48px;height:48px;
-      border-radius:50%;background:var(--grad-gold);color:#1c1305;display:grid;place-items:center;
-      font-size:1.25rem;font-weight:700;box-shadow:var(--shadow-gold);pointer-events:none}
-    .ba-tag{position:absolute;top:16px;padding:6px 14px;border-radius:100px;font-family:'Sora',sans-serif;
-      font-weight:600;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
-      background:rgba(6,9,15,.68);backdrop-filter:blur(6px);border:1px solid var(--line-2)}
-    .ba-tag-b{left:16px;color:var(--txt-2)} .ba-tag-a{right:16px;color:var(--gold)}
-    .ba-hint{text-align:center;color:var(--muted);font-size:.85rem;margin-top:18px}
-  </style>
-  <div class="wrap">
-    <div class="reveal">
-      <span class="eyebrow">Avant / Après</span>
-      <h2 class="title">La transformation, <span class="accent">en un geste.</span></h2>
-      <p class="lead">Faites glisser la poignée pour découvrir le résultat d'un de nos chantiers.</p>
-    </div>
-    <div class="ba-inner reveal">
-      <div class="ba" id="ba" tabindex="0" role="slider" aria-label="Comparateur avant après" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-        <img class="ba-after" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80" alt="Après travaux">
-        <img class="ba-before" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80" alt="Avant travaux">
-        <span class="ba-tag ba-tag-b">Avant</span>
-        <span class="ba-tag ba-tag-a">Après</span>
-        <div class="ba-handle"></div>
-        <div class="ba-grip">&#8646;</div>
-      </div>
-      <p class="ba-hint">Glissez, cliquez ou utilisez les flèches ← → · Photo d'illustration, à remplacer par vos chantiers.</p>
-    </div>
-  </div>
-  <script>
-  (function(){
-    var ba=document.getElementById('ba'); if(!ba)return;
-    function set(p){p=Math.max(0,Math.min(100,p));ba.style.setProperty('--pos',p+'%');ba.setAttribute('aria-valuenow',Math.round(p));}
-    function fromX(x){var r=ba.getBoundingClientRect();set((x-r.left)/r.width*100);}
-    var drag=false;
-    ba.addEventListener('pointerdown',function(e){drag=true;try{ba.setPointerCapture(e.pointerId);}catch(_){}fromX(e.clientX);});
-    ba.addEventListener('pointermove',function(e){if(drag)fromX(e.clientX);});
-    window.addEventListener('pointerup',function(){drag=false;});
-    ba.addEventListener('keydown',function(e){var v=parseFloat(ba.getAttribute('aria-valuenow'))||50;
-      if(e.key==='ArrowLeft'){set(v-4);e.preventDefault();}if(e.key==='ArrowRight'){set(v+4);e.preventDefault();}});
-    set(50);
-  })();
-  </script>
-</section>
 <section id="realisations">
   <div class="wrap">
     <div class="reveal">
@@ -753,21 +700,20 @@
     </div>
     <div class="foot-bottom">
       <span>© <span id="yr"></span> Agencement Arro — Artisan RGE. Tous droits réservés.</span>
-      <span class="demo">Maquette de démonstration réalisée par WEB71</span>
+      <span class="demo">Maquette de démonstration réalisée par GENERATIONAPP</span>
     </div>
   </div>
 </footer>
 
-<!-- ===== BANDEAU CONVERSION WEB71 ===== -->
+<!-- ===== BANDEAU CONVERSION GENERATIONAPP ===== -->
 <div class="w71-bar" id="w71bar">
   <div class="w71-inner">
     <div class="w71-msg">
-      <span class="w71-badge">✦ WEB71</span>
+      <span class="w71-badge">✦ GENERATIONAPP</span>
       <span class="w71-txt">Cette maquette a été créée pour <b>Agencement Arro</b> · En ligne sous 48h, et le site est à vous</span>
     </div>
     <div class="w71-act">
-      <span class="w71-price"><b>299 €</b><small>une seule fois · sans abonnement</small></span>
-      <a class="btn btn-gold" href="mailto:contactweb71@gmail.com?subject=Je%20veux%20mon%20site%20(Maison%20Thermique)&body=Bonjour,%20votre%20maquette%20me%20pla%C3%AEt,%20je%20souhaite%20la%20mettre%20en%20ligne.">Me contacter</a>
+      <a class="btn btn-gold" href="https://generationapp.fr/contact/" target="_blank" rel="noopener">Me contacter</a>
       <button class="w71-close" id="w71close" aria-label="Fermer le bandeau">×</button>
     </div>
   </div>
@@ -822,7 +768,7 @@
   // ===== Calculateur =====
 
 
-  // ===== Bandeau WEB71 =====
+  // ===== Bandeau GENERATIONAPP =====
   (function(){
     const bar=document.getElementById('w71bar'),close=document.getElementById('w71close');
     if(sessionStorage.getItem('w71-closed'))return;
@@ -838,7 +784,7 @@
   <defs>
     <pattern id="w71wm" width="360" height="230" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
       <text x="10" y="120" fill="#ffffff" fill-opacity="0.07" font-family="Sora,Arial,sans-serif"
-        font-weight="700" font-size="26" letter-spacing="4">D&#201;MO &#183; WEB71</text>
+        font-weight="700" font-size="26" letter-spacing="4">GENERATIONAPP</text>
     </pattern>
   </defs>
   <rect width="100%" height="100%" fill="url(#w71wm)"/>

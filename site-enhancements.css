@@ -1,0 +1,147 @@
+/* Couche visuelle premium commune aux maquettes de prospection.
+   Elle ne modifie aucune information métier ni aucun contenu prospect. */
+:root {
+  --premium-accent: var(--gold, var(--eau, var(--bleu, var(--or, var(--feu, #d7a65a)))));
+  --premium-dark: var(--nuit, var(--ink, #101827));
+}
+
+/* Boutons avec profondeur, reflet et état pressé. */
+.btn {
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow:
+    0 4px 0 color-mix(in srgb, var(--premium-accent) 52%, #000 48%),
+    0 13px 28px color-mix(in srgb, var(--premium-accent) 25%, transparent);
+  transform: translateY(-1px);
+  transition: transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s ease, filter .24s ease;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 28%, rgba(255,255,255,.34) 50%, transparent 72%);
+  transform: translateX(-130%);
+  transition: transform .65s ease;
+}
+.btn:hover {
+  transform: translateY(-5px);
+  filter: saturate(1.08) brightness(1.04);
+  box-shadow:
+    0 7px 0 color-mix(in srgb, var(--premium-accent) 52%, #000 48%),
+    0 20px 36px color-mix(in srgb, var(--premium-accent) 32%, transparent);
+}
+.btn:hover::before { transform: translateX(130%); }
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--premium-accent) 52%, #000 48%), 0 7px 14px rgba(0,0,0,.18);
+}
+.btn.ghost, .btn.btn-ghost, .btn.light {
+  box-shadow: 0 3px 0 rgba(0,0,0,.18), 0 10px 22px rgba(0,0,0,.12);
+}
+
+/* Icônes et badges comme petits objets en relief, dans la couleur existante. */
+.svc .ic, .svc .ic-box, .tr .ic, .info-row .ic, .info-row .ico,
+.badge .ico, .badge .ic, .hero-badges .badge, .hero-badges .chip {
+  border: 1px solid color-mix(in srgb, var(--premium-accent) 34%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.34),
+    0 7px 0 color-mix(in srgb, var(--premium-accent) 20%, #000 80%),
+    0 12px 22px color-mix(in srgb, var(--premium-accent) 18%, transparent);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+.svc:hover .ic, .svc:hover .ic-box, .tr:hover .ic, .badge:hover .ico, .badge:hover .ic {
+  transform: translateY(-4px) rotate(-2deg);
+  filter: saturate(1.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.42),
+    0 9px 0 color-mix(in srgb, var(--premium-accent) 24%, #000 76%),
+    0 18px 28px color-mix(in srgb, var(--premium-accent) 24%, transparent);
+}
+
+/* Icônes 3D premium : services, preuves de confiance, coordonnées et certifications. */
+.svc .ic, .svc .ic-box, .info-row .ic, .info-row .ico,
+.badge .ico, .badge .ic, .tr .ic, .hb .icn, .rge-chip .icn, .ring {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 520px;
+  background:
+    radial-gradient(circle at 28% 20%, rgba(255,255,255,.42), transparent 28%),
+    linear-gradient(145deg,
+      color-mix(in srgb, var(--premium-accent) 28%, #fff 72%),
+      color-mix(in srgb, var(--premium-accent) 14%, var(--premium-dark) 86%));
+}
+.svc .ic::before, .svc .ic-box::before, .info-row .ic::before, .info-row .ico::before,
+.badge .ico::before, .badge .ic::before, .tr .ic::before, .hb .icn::before,
+.rge-chip .icn::before, .ring::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,.34), inset 0 -5px 10px rgba(0,0,0,.16);
+  pointer-events: none;
+}
+.svc .ic > *, .svc .ic-box > *, .info-row .ic > *, .info-row .ico > *,
+.badge .ico > *, .badge .ic > *, .tr .ic > *, .hb .icn > *,
+.rge-chip .icn > *, .ring > * {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 1px rgba(0,0,0,.2));
+}
+.hb .icn {
+  width: 46px;
+  height: 46px;
+  padding: 10px;
+  border-radius: 14px;
+  flex: 0 0 46px;
+}
+.rge-chip .icn {
+  width: 29px;
+  height: 29px;
+  padding: 5px;
+  border-radius: 9px;
+}
+.info-row .ico {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  flex: 0 0 42px;
+  font-size: 1.25rem;
+}
+.ring {
+  transform: rotate(-5deg) translateZ(0);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.float-card:hover .ring, .ratecard:hover .ring, .ring:hover {
+  transform: rotate(4deg) translateY(-4px) scale(1.04);
+}
+.btn .icn { filter: drop-shadow(0 2px 1px rgba(0,0,0,.2)); }
+
+/* Cartes plus nettes et profondeur discrète au survol. */
+.svc, .av, .avis, .float-card, .ratecard, form, .hero-shot, .shot, .gi, .card {
+  box-shadow: 0 18px 42px rgba(8,16,30,.13), 0 2px 0 rgba(255,255,255,.35) inset;
+}
+.svc:hover, .av:hover, .avis:hover, .ratecard:hover, .float-card:hover, .shot:hover, .gi:hover {
+  box-shadow: 0 25px 54px rgba(8,16,30,.2), 0 2px 0 rgba(255,255,255,.4) inset;
+}
+
+/* Légère lumière de profondeur dans les héros, sans changer la palette. */
+.hero { isolation: isolate; }
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--premium-accent) 16%, transparent), transparent 28%);
+  opacity: .8;
+}
+.hero .wrap, .hero-inner, .hero-content, .hero-visual { position: relative; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn::before, .svc .ic, .svc .ic-box, .tr .ic, .badge .ico, .badge .ic { transition: none; }
+  .btn:hover, .svc:hover .ic, .svc:hover .ic-box, .tr:hover .ic, .badge:hover .ico, .badge:hover .ic { transform: none; }
+}

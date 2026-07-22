@@ -132,6 +132,7 @@
   .reveal{opacity:0;transform:translateY(26px);transition:.7s}
   .reveal.on{opacity:1;transform:none}
 </style>
+  <link rel="stylesheet" href="../site-enhancements.css">
 </head>
 <body>
 
@@ -270,7 +271,7 @@
 <footer>
   <p><b>Établissements FRETEL</b> — Plomberie · Chauffage · Climatisation · Salle de bains</p>
   <p>4 Rue de Dijon, 71400 Autun · 03 85 86 17 61 · fabricefretel@sfr.fr</p>
-  <p class="credit">Maquette de présentation réalisée par <b>WEB71</b> · Photos d'illustration · Ne pas diffuser sans accord</p>
+  <p class="credit">Maquette de présentation réalisée par <b>GENERATIONAPP</b> · Photos d'illustration · Ne pas diffuser sans accord</p>
 </footer>
 
 <script>
@@ -278,6 +279,48 @@
   addEventListener('scroll',()=>hd.classList.toggle('scrolled',scrollY>40));
   const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+
+<!-- ===== FILIGRANE + BANDEAU GENERATIONAPP ===== -->
+<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="position:fixed;inset:0;width:100%;height:100%;z-index:9998;pointer-events:none">
+  <defs>
+    <pattern id="w71wm" width="360" height="230" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <text x="10" y="120" fill="#1c2530" fill-opacity="0.10" font-family="Arial,sans-serif" font-weight="700" font-size="26" letter-spacing="4">GENERATIONAPP</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#w71wm)"/>
+</svg>
+<style>
+  .w71-bar{position:fixed;left:0;right:0;bottom:0;z-index:9999;background:rgba(9,13,22,.94);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);border-top:1px solid rgba(214,43,43,.35);box-shadow:0 -14px 40px -16px rgba(0,0,0,.7);transform:translateY(120%);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .w71-bar.show{transform:translateY(0)}
+  .w71-inner{max-width:1180px;margin:0 auto;padding:14px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .w71-msg{display:flex;align-items:center;gap:14px;min-width:0}
+  .w71-badge{font:700 .72rem/1 Arial,sans-serif;letter-spacing:2px;color:#fff;background:linear-gradient(135deg,#d62b2b,#f0a020);padding:7px 12px;border-radius:999px;white-space:nowrap}
+  .w71-txt{font-size:.95rem;color:#c9d2de;margin:0}
+  .w71-txt b{color:#fff;font-weight:600}
+  .w71-act{display:flex;align-items:center;gap:12px}
+  .w71-cta{font:700 .95rem Arial,sans-serif;color:#141821;background:linear-gradient(135deg,#f0c040,#e0a020);padding:11px 20px;border-radius:12px;text-decoration:none;white-space:nowrap}
+  .w71-close{background:transparent;border:0;color:#8b93a1;font-size:1.5rem;line-height:1;cursor:pointer}
+  @media(max-width:600px){.w71-txt{font-size:.82rem}}
+</style>
+<div class="w71-bar" id="w71bar">
+  <div class="w71-inner">
+    <div class="w71-msg">
+      <span class="w71-badge">&#10022; GENERATIONAPP</span>
+      <span class="w71-txt">Cette maquette a &eacute;t&eacute; cr&eacute;&eacute;e pour <b>Éts FRETEL</b> &middot; En ligne sous 48h, et le site est &agrave; vous</span>
+    </div>
+    <div class="w71-act">
+      <a class="w71-cta" href="https://generationapp.fr/contact/" target="_blank" rel="noopener">Me contacter</a>
+      <button class="w71-close" id="w71close" aria-label="Fermer le bandeau">&times;</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function(){var b=document.getElementById('w71bar');if(!b)return;
+  function s(){if(scrollY>260)b.classList.add('show')}
+  addEventListener('scroll',s,{passive:true});setTimeout(function(){b.classList.add('show')},1200);
+  var c=document.getElementById('w71close');if(c)c.addEventListener('click',function(){b.classList.remove('show')});})();
 </script>
 
 </body>
